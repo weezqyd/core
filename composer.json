@@ -1,23 +1,16 @@
 {
-  "name": "apiato/core",
-  "description": "Core package for Apiato.",
-  "homepage": "http://apiato.io/",
+  "name": "emalify/core",
+  "description": "Core package for emalify API.",
+  "homepage": "http://emalify.com/",
   "support": {
-    "issues": "https://github.com/apiato/core/issues",
-    "source": "https://github.com/apiato/core"
+    "issues": "https://github.com/weezqyd/core/issues",
+    "source": "https://github.com/weezqyd/core"
   },
   "authors": [
     {
       "name": "Mahmoud Zalt",
       "email": "mahmoud@zalt.me"
     }
-  ],
-  "keywords": [
-    "apiato",
-    "apiato core",
-    "core",
-    "Porto",
-    "Porto SAP"
   ],
   "license": "MIT",
   "require": {
