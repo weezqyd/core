@@ -76,17 +76,16 @@ abstract class Request extends LaravelRequest
                     return true;
                 }
             }
-
+        }
             // check if the user has any role / permission to access the route
-            $hasAccess = array_merge(
+            $hasAccess = $user ? array_merge(
                 $this->hasAnyPermissionAccess($user),
                 $this->hasAnyRoleAccess($user)
-            );
+            ) : [];
 
             // allow access if user has access to any of the defined roles or permissions.
             return empty($hasAccess) ? true : in_array(true, $hasAccess);
-        }
-        return false;
+
     }
 
     /**
