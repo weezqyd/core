@@ -6,6 +6,7 @@ use Apiato\Core\Abstracts\Transformers\Transformer;
 use Fractal;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Pagination\AbstractPaginator;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use ReflectionClass;
 use Request;
@@ -162,15 +163,15 @@ trait ResponseTrait
     private function filterResponse(array $responseArray, array $filters)
     {
         $filteredData = null;
-        $responseArrayWithoutMeta = array_except($responseArray, ['meta']);
+        $responseArrayWithoutMeta = Arr::except($responseArray, ['meta']);
         if ($this->array_is_associative($responseArrayWithoutMeta)) {
             $filteredData = $this->filterObjectKeys($responseArrayWithoutMeta, $filters);
         } else {
             foreach ($responseArrayWithoutMeta as $key => $value) {
-                array_set($filteredData, $key, $this->filterResponse($value, $filters));
+                Arr::set($filteredData, $key, $this->filterResponse($value, $filters));
             }
         }
-        $filteredData['meta'] = array_get($responseArray, 'meta', []);
+        $filteredData['meta'] = Arr::get($responseArray, 'meta', []);
         return $filteredData;
     }
 
@@ -191,12 +192,13 @@ trait ResponseTrait
     public function filterObjectKeys($obj, $filters)
     {
         $filteredData = [];
-        foreach (array_dot($obj) as $key => $value) {
+        foreach (Arr::dot($obj) as $key => $value) {
             foreach ($filters as $filter) {
                 $keyWithWildcard = preg_replace("/\.(\d)+\./", ".*.", $key);
-                if ($keyWithWildcard === $filter || preg_match("/^{$filter}\./", $keyWithWildcard)) {
-                    array_set($filteredData, $key, $value);
+                if ($keyWithWildcard === $filter || preg_match("/^{$filter}\./", $keyWithWildcard) || $key === $filter) {
+                    Arr::set($filteredData, $key, $value);
                 }
+
             }
         }
         return $filteredData;
